@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Adivinha</string>
+    <string name="insert_number">Introduz um Numero</string>
+    <string name="inserir">Numero (entre 1 e 10)</string>
+    <string name="try_find_the_number_i_think">Tenta descobrir o numero em que estou a pensar</string>
+    <string name="button">Tentar</string>
+    <string name="number_of_trys">Numero de Tentativas</string>
+    <string name="Number_trys">0</string>
+    <string name="Restart">Recomeçar</string>
+    <string name="TryButon">Tentar</string>
+    <string name="begin">Comecar</string>
+    <string name="exit">Sair</string>
+    <string name="number_already_used">Numeros ja tentados:</string>
+</resources>
