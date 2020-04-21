@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Actividade4</string>
+    <string name="messageNome">Nome</string>
+    <string name="messageTelefone">Telefone</string>
+    <string name="messageEmail">Email</string>
+    <string name="messageIdade">Idade</string>
+    <string name="messagePeso">Peso</string>
+    <string name="messageAltura">Altura</string>
+    <string name="botao">Enviar</string>
+</resources>
