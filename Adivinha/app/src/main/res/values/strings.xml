@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Adivinha</string>
+    <string name="adivinha">Tente adivinhar o número em que estou a pensar ...</string>
+    <string name="numero">Número (entre 1 e 10)</string>
+    <string name="adivinhar">Adivinhar</string>
+    <string name="tentativas">Tentativas</string>
+</resources>
