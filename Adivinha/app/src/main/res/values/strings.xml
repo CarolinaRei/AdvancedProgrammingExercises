@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <resources>
     <string name="app_name">Guess What</string>
     <string name="insert_number">Insert Number</string>
@@ -12,3 +13,12 @@
     <string name="exit">Exit</string>
     <string name="number_already_used">Number Already Used:</string>
 </resources>
+=======
+<resources>
+    <string name="app_name">Adivinha</string>
+    <string name="adivinha">Tente adivinhar o número em que estou a pensar ...</string>
+    <string name="numero">Número (entre 1 e 10)</string>
+    <string name="adivinhar">Adivinhar</string>
+    <string name="tentativas">Tentativas</string>
+</resources>
+>>>>>>> 661dd53ed0f9a2340f66ec3e345b9ef38748533a
