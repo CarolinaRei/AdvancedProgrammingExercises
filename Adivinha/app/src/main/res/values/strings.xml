@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-<resources>
-    <string name="app_name">Guess What</string>
-    <string name="insert_number">Insert Number</string>
-    <string name="inserir">Number (Between 1 and 10)</string>
-    <string name="try_find_the_number_i_think">try find the number i think</string>
-    <string name="button">Try</string>
-    <string name="number_of_trys">Number of Trys</string>
-    <string name="Number_trys">0</string>
-    <string name="Restart">Restart</string>
-    <string name="TryButon">TRY</string>
-    <string name="begin">Start</string>
-    <string name="exit">Exit</string>
-    <string name="number_already_used">Number Already Used:</string>
-</resources>
-=======
 <resources>
     <string name="app_name">Adivinha</string>
     <string name="adivinha">Tente adivinhar o número em que estou a pensar ...</string>
@@ -21,4 +5,3 @@
     <string name="adivinhar">Adivinhar</string>
     <string name="tentativas">Tentativas</string>
 </resources>
->>>>>>> 661dd53ed0f9a2340f66ec3e345b9ef38748533a
