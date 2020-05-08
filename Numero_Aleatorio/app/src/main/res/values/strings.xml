@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name" translatable="false">Numero_Aleatorio</string>
+    <string name="Title">Choose a number between 1 and 10</string>
+    <string name="bottun">Try</string>
+    <string name="resultado">The result is:</string>
+    <string name="numero_tentativas">Attemps:</string>
+    <string name="number">write a number</string>
+    <string name="numero_obrigatorio">You have to choose a number!</string>
+    <string name="numero_limites">The number must be between 1 and 10!</string>
+    <string name="resultado_correto">you are right!</string>
+    <string name="resultado_errado_menor">You are wrong! the number is smaller!</string>
+    <string name="resultado_errado_maior">You are wrong! the number is bigger!</string>
+</resources>
