@@ -3,26 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/ListaLivrosFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.livros.FirstFragment"
+        android:id="@+id/ListaLivrosFragment"
+        android:name="com.example.livros.ListaLivroFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_lista_livros">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_novoLivro"
+            app:destination="@id/AdicionarLivroFragment" />
+        <action
+            android:id="@+id/action_alterar_livro"
+            app:destination="@id/alteraLivroFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.livros.SecondFragment"
+        android:id="@+id/AdicionarLivroFragment"
+        android:name="com.example.livros.AdicionarLivroFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
+        tools:layout="@layout/fragment_adicionar_livro">
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_NovoLivro_to_ListaLivros"
+            app:destination="@id/ListaLivrosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/alteraLivroFragment"
+        android:name="com.example.livros.AlteraLivroFragment"
+        android:label="fragment_altera_livro"
+        tools:layout="@layout/fragment_altera_livro" >
+        <action
+            android:id="@+id/action_alteraLivroFragment_to_ListaLivrosFragment"
+            app:destination="@id/ListaLivrosFragment" />
+        <argument
+            android:name="idLivro"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 </navigation>
