@@ -12,5 +12,5 @@ Projetos desenvolvidos durante o semestre:
 -Adivinha 
 
 -Livros
-Aplicaçao com base de dados local.
+Aplicaçao com base de dados local (SQLite).
 
