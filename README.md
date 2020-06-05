@@ -4,6 +4,8 @@ Instituto Politecnico da Guarda
 
 
 Projetos desenvolvidos durante o semestre:
+
+
 -Mensagem
 -Mensagem 1
 
