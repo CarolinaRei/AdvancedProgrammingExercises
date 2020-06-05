@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Build;
@@ -13,16 +15,33 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class LivrosContentProvider extends ContentProvider {
+    private static final String AUTHORITY = "com.example.livros";
+    private static final String CATEGORIAS = "categorias";
+    private static final String LIVROS = "livros";
+
+    private static final int URI_CATEGORIAS = 100;
+    private static final int URI_ID_CATEGORIA = 101;
+    private static final int URI_LIVROS = 200;
+    private static final int URI_ID_LIVRO = 201;
+
+    private static final String CURSOR_DIR = "vnd.android.cursor.dir/";
+    private static final String CURSOR_ITEM = "vnd.android.cursor.item/";
+
+    private static final Uri ENDERECO_BASE = Uri.parse("content://"+ AUTHORITY);
+
+    public static final Uri ENDERECO_CATEGORIAS= Uri.withAppendedPath(ENDERECO_BASE,CATEGORIAS);
+    public static final Uri ENDERECO_LIVROS= Uri.withAppendedPath(ENDERECO_BASE,LIVROS);
+
     private BdLivrosOpenHelper openHelper;
 
 
     private UriMatcher getUriMactcher(){
       UriMatcher uriMatcher =  new UriMatcher(UriMatcher.NO_MATCH);
-        //TODO: indicar quais os endereços válidos. Por exemplo
-        //Content://com.example.livros/Livros
-        //Content://com.example.livros/Livro/4
-        //Content://com.example.livros/Livro/categorias
-        //Content://com.example.livros/Livro/categorias/3
+
+      uriMatcher.addURI(AUTHORITY,CATEGORIAS, URI_CATEGORIAS);
+      uriMatcher.addURI(AUTHORITY, CATEGORIAS + "/#", URI_ID_CATEGORIA);
+      uriMatcher.addURI(AUTHORITY, LIVROS, URI_LIVROS);
+      uriMatcher.addURI(AUTHORITY, LIVROS + "/#", URI_ID_LIVRO);
 
        return uriMatcher;
     }
@@ -120,7 +139,22 @@ public class LivrosContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        SQLiteDatabase bd = openHelper.getReadableDatabase();
+        String id = uri.getLastPathSegment();
+
+        switch (getUriMactcher().match(uri)){
+            case URI_CATEGORIAS:
+                return new BdTableCategorias(bd).query(projection,selection,selectionArgs,null,null, sortOrder);
+            case URI_LIVROS:
+                return new BdTableLivros(bd).query(projection,selection,selectionArgs,null,null, sortOrder);
+            case URI_ID_CATEGORIA:
+                return new BdTableCategorias(bd).query(projection,BdTableCategorias._ID+"=?",new String[]{id},null,null, sortOrder);
+            case URI_ID_LIVRO:
+                return new BdTableLivros(bd).query(projection,BdTableLivros._ID+"=?",new String[]{id},null,null, sortOrder);
+            default: //Uri não suportado
+               throw new UnsupportedOperationException("Endereço query não suportado: "+ uri.getPath());
+
+        }
     }
 
     /**
@@ -144,8 +178,18 @@ public class LivrosContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-
-        return null;
+        switch (getUriMactcher().match(uri)){
+            case URI_CATEGORIAS:
+                return CURSOR_DIR + CATEGORIAS;
+            case URI_LIVROS:
+               return CURSOR_DIR + LIVROS;
+            case URI_ID_CATEGORIA:
+                return CURSOR_ITEM + CATEGORIAS;
+            case URI_ID_LIVRO:
+                return CURSOR_ITEM + LIVROS;
+            default: //Uri não suportado
+                return  null;
+        }
     }
 
     /**
@@ -164,7 +208,22 @@ public class LivrosContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        SQLiteDatabase bd = openHelper.getWritableDatabase();
+        long id;
+        switch (getUriMactcher().match(uri)){
+            case URI_CATEGORIAS:
+               id = new BdTableCategorias(bd).insert(values);
+                break;
+            case URI_LIVROS:
+                id= new  BdTableLivros(bd).insert(values);
+                break;
+            default: //Uri não suportado
+                throw new UnsupportedOperationException("Endereço insert não suportado: "+ uri.getPath());
+        }
+        if(id == -1){
+            throw new SQLException("Não foi possivel inserir o registo");
+        }
+        return Uri.withAppendedPath(uri,String.valueOf(id));
     }
 
     /**
@@ -190,7 +249,17 @@ public class LivrosContentProvider extends ContentProvider {
      */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase bd = openHelper.getWritableDatabase();
+        String id = uri.getLastPathSegment();
+
+        switch (getUriMactcher().match(uri)){
+            case URI_ID_CATEGORIA:
+                return new BdTableCategorias(bd).delete(BdTableCategorias._ID+"=?",new String[]{id});
+            case URI_ID_LIVRO:
+               return new BdTableLivros(bd).delete(BdTableLivros._ID+"=?",new String[]{id});
+            default: //Uri não suportado
+                throw new UnsupportedOperationException("Endereço delete não suportado: "+ uri.getPath());
+        }
     }
 
     /**
@@ -213,6 +282,16 @@ public class LivrosContentProvider extends ContentProvider {
      */
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase bd = openHelper.getWritableDatabase();
+        String id = uri.getLastPathSegment();
+
+        switch (getUriMactcher().match(uri)){
+            case URI_ID_CATEGORIA:
+                return new BdTableCategorias(bd).update(values,BdTableCategorias._ID+"=?",new String[]{id});
+            case URI_ID_LIVRO:
+                return new BdTableLivros(bd).update(values,BdTableLivros._ID+"=?",new String[]{id});
+            default: //Uri não suportado
+                throw new UnsupportedOperationException("Endereço update não suportado: "+ uri.getPath());
+        }
     }
 }

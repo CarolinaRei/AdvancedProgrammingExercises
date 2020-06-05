@@ -3,7 +3,16 @@ package com.example.livros;
 public class Livro {
     private long id=-1;
     private String titulo;
-    private long idCategoria=-1;
+    private long idCategoria = -1;
+    private String categoria =null;
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
 
     public long getId() {
         return id;

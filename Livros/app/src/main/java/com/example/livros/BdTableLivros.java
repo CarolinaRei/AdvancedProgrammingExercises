@@ -4,14 +4,26 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.provider.FontsContract;
+import android.text.TextUtils;
 
-    public class BdTableLivros implements BaseColumns{
-        public static final String NOME_TABELA = "Livros";
-        public static final String CAMPO_TITULO = "titulo";
-        public static final String CAMPO_CATEGORIA = "categoria";
-        private final SQLiteDatabase db;
+import java.util.Arrays;
 
-        public static final String [] TODOS_CAMPOS = {_ID,CAMPO_TITULO,CAMPO_CATEGORIA};
+public class BdTableLivros implements BaseColumns{
+    public static final String NOME_TABELA = "livros";
+
+    public static final String CAMPO_TITULO = "titulo";
+    public static final String CAMPO_ID_CATEGORIA = "id_categoria";
+    public static final String CAMPO_CATEGORIA = "categoria";
+
+    public static final String CAMPO_ID_COMPLETO = NOME_TABELA + "." + _ID;
+    public static final String CAMPO_TITULO_COMPLETO = NOME_TABELA + "." + CAMPO_TITULO;
+    public static final String CAMPO_ID_CATEGORIA_COMPLETO = NOME_TABELA + "." + CAMPO_ID_CATEGORIA;
+    public static final String CAMPO_CATEGORIA_COMPLETO = BdTableCategorias.CAMPO_DESCRICAO_COMPLETO + " AS " + CAMPO_CATEGORIA;
+
+    public static final String[] TODOS_CAMPOS = {CAMPO_ID_COMPLETO, CAMPO_TITULO_COMPLETO, CAMPO_ID_CATEGORIA_COMPLETO, CAMPO_CATEGORIA_COMPLETO};
+
+    private SQLiteDatabase db;
 
 
         public BdTableLivros(SQLiteDatabase db){
@@ -23,7 +35,7 @@ import android.provider.BaseColumns;
                     _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     CAMPO_TITULO + " TEXT NOT NULL, " +
                     CAMPO_CATEGORIA + " INTEGER NOT NULL," +
-                    "FOREIGN KEY (" + CAMPO_CATEGORIA + ") REFERENCES " +
+                    "FOREIGN KEY (" + CAMPO_ID_CATEGORIA + ") REFERENCES " +
                     BdTableCategorias.NOME_TABELA + "("+ BdTableCategorias._ID + ")" +
                     ")");
         }
@@ -70,7 +82,28 @@ import android.provider.BaseColumns;
         public Cursor query (String[] columns, String selection,
                              String[] selectionArgs,String groupBy,String having,
                              String orderBy){
-            return db.query(NOME_TABELA,columns,selection,selectionArgs,groupBy,having,orderBy);
+            if(!Arrays.asList(columns).contains(CAMPO_CATEGORIA_COMPLETO)) {
+                return db.query(NOME_TABELA, columns, selection, selectionArgs, groupBy, having, orderBy);
+            }
+            String campos = TextUtils.join(",", columns);
+
+            String sql = " SELECT "+ campos;
+            sql += " FROM " + NOME_TABELA + "INNER JOIN" + BdTableCategorias.NOME_TABELA;
+            sql += " ON " + CAMPO_ID_CATEGORIA_COMPLETO + "=" + BdTableCategorias.CAMPO_ID_COMPLETO;
+
+            if(selection != null) {
+                sql += " WHERE " + selection;
+            }
+            if(groupBy != null){
+                sql += " GROUP BY " + groupBy;
+                if(having !=null){
+                    sql += " HAVING "+having;
+                }
+            }
+            if(orderBy != null){
+                sql += " ORDER BY " + orderBy;
+            }
+            return db.rawQuery(sql, selectionArgs);
         }
         /**
          * Convenience method for updating rows in the database.
