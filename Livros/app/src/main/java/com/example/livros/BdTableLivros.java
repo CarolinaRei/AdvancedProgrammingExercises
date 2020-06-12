@@ -31,7 +31,7 @@ public class BdTableLivros implements BaseColumns{
         }
 
         public void cria() {
-            db.execSQL("CREATE TABLE " + NOME_TABELA + "(" +
+            db.execSQL(" CREATE TABLE " + NOME_TABELA + "(" +
                     _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     CAMPO_TITULO + " TEXT NOT NULL, " +
                     CAMPO_CATEGORIA + " INTEGER NOT NULL," +
